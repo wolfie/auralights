@@ -2,7 +2,14 @@ import ws281x from "rpi-ws281x-native";
 
 const LED_COUNT = 60;
 
-ws281x.init(60);
+process.on("SIGINT", function() {
+  ws281x.reset();
+  process.nextTick(function() {
+    process.exit(0);
+  });
+});
+
+ws281x.init(LED_COUNT);
 const leds = new Uint32Array(LED_COUNT);
 
 const loop = () => {
